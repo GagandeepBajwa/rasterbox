@@ -7,6 +7,7 @@ from Utils.Misc import *
 from Utils.Label import *
 from Utils.Image import *
 
+cfg = load_config()
 
 class Data(object):
     def __init__(self, src, images_path, labels_path):
@@ -33,7 +34,6 @@ class Data(object):
 
     def __build_labels(self, bins):
         self.Label = dict()
-        cfg = load_config()
         classes = cfg['bcgw_labels']
 
         for _, bin in enumerate(bins):
