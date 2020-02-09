@@ -14,12 +14,14 @@ class Image(object):
     def spatial(self):
         return spatial(self.lines, self.samples, self.bands, self.Data)
 
-    def rgb(self):
-        res = np.zeros((self.lines, self.samples, 3))
-        red = rescale(self.spatial()[:,:,3])
-        blue = rescale(self.spatial()[:,:,2])
-        green = rescale(self.spatial()[:,:,1])
-        res[:,:,0] = red
-        res[:,:,1] = green
-        res[:,:,2] = blue
-        return res
+    def __build_rgb(self):
+        arr = np.zeros((self.lines, self.samples, 3))
+        print("rgb shape:", arr.shape)
+
+        for i in range(0, 3):
+            arr[:, :, i] = self.Data[3 - i, :].reshape((self.lines, self.samples))
+
+        for i in range(0, 3):
+            arr[:, :, i] = rescale(arr[:, :, i])
+
+        self.rgb = arr
