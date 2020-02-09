@@ -1,6 +1,5 @@
 import numpy as np
-from Utils.Misc import *
-from Utils.DataManip import *
+import  matplotlib.pyplot as plt
 
 class Image(object):
     def __init__(self, bin):
@@ -8,11 +7,8 @@ class Image(object):
         self.samples, self.lines, self.bands = \
             int(samples), int(lines), int(bands)
         self.Data = data
+        self.__build_rgb()
 
-    def ravel(self):
-        return ravel(self.lines, self.samples, self.bands, self.Data)
-    def spatial(self):
-        return spatial(self.lines, self.samples, self.bands, self.Data)
 
     def __build_rgb(self):
         arr = np.zeros((self.lines, self.samples, 3))
@@ -25,3 +21,17 @@ class Image(object):
             arr[:, :, i] = rescale(arr[:, :, i])
 
         self.rgb = arr
+
+
+    def ravel(self):
+        return ravel(self.lines, self.samples, self.bands, self.Data)
+
+
+    def spatial(self):
+        return spatial(self.lines, self.samples, self.bands, self.Data)
+
+
+    def showplot(self):
+        plt.imshow(self.rgb)
+        plt.tight_layout()
+        plt.show()

@@ -3,25 +3,26 @@ import math
 import yaml
 import struct
 import numpy as np
-from Utils.Misc import *
-from Utils.Label import *
-from Utils.Image import *
+from rasterbox import Misc
+from rasterbox import Label
+from rasterbox import Image
 
-cfg = load_config()
+cfg = Misc.load_config()
 
-class Data(object):
-    def __init__(self, src, images_path, labels_path):
+class rasterbox(object):
+    def __init__(self, src, images_path, targets_path):
         self.src = src
-        self.__build(images_path, labels_path)
+        self.__build(images_path, targets_path)
 
-    def __build(self, images_path, labels_path):
+    def __build(self, images_path, targets_path):
         images_path = os.path.join(self.src, '%s' % images_path)
-        labels_path = os.path.join(self.src, '%s' % labels_path)
-        img_bins = self.__build_binaries(images_path)
-        lbl_bins = self.__build_binaries(labels_path)
-        print(lbl_bins)
-        self.__build_images(img_bins)
-        self.__build_labels(lbl_bins)
+        targets_path = os.path.join(self.src, '%s' % targets_path)
+        image_bins = self.__build_binaries(images_path)
+        target_bins = self.__build_binaries(targets_path)
+
+        self.__build_images(image_bins)
+        self.__build_targets(target_bins)
+
 
     def __build_images(self, bins):
         for idx, bin in enumerate(bins):
@@ -32,6 +33,7 @@ class Data(object):
             else:
                 err("Do not recognize file ", bin)
 
+
     def __build_labels(self, bins):
         self.Label = dict()
         classes = cfg['bcgw_labels']
@@ -39,10 +41,11 @@ class Data(object):
         for _, bin in enumerate(bins):
             # add a dict item to the Label dict --
             # labelname : Label
-            self.Label.update({
-                c:Label(c, bin, cfg)
+            self.Target.update({
+                c:Target(c, bin, cfg)
                 for c in classes if c in bin.lower()
             })
+
 
     def __build_binaries(self,path):
         try:
