@@ -1,20 +1,20 @@
-
-class Label(object):
-    def __init__(self, name, bin, cfg):
+from rasterbox.utilities import Misc
+class Target(object):
+    def __init__(self, name, bin, target_list):
         self.name = name
-        s,l,b,self.Data = read_binary(bin)
+        s,l,b,self.Data = Misc.read_binary(bin)
         self.samples, self.lines, self.bands = int(s), int(l), int(b)
-        self.__build_binary(cfg)
+        self.__build_binary(target_list)
 
-    def __build_binary(self, cfg):
-        classes = cfg['bcgw_labels']
-        if self.name in classes:
-            bstr = classes[self.name]['bool']
-            val =  classes[self.name]['val']
+    def __build_binary(self, target_list):
+        targets = target_list
+        if self.name in targets:
+            b = targets[self.name]['bool']
+            val =  targets[self.name]['val']
 
-            if bstr == 'True':
+            if b:
                 self.Binary = self.Data == float(val)
-            elif bstr == 'False':
+            elif not b:
                 self.Binary = self.Data != float(val)
             else:
                 raise Exception('There was an error encoding binaries')

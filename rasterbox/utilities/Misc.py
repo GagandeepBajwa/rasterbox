@@ -9,8 +9,8 @@ import numpy as np
 import os.path as path
 import matplotlib.pyplot as plt
 
-def load_config():
-    cfg = yaml.load(open('dev/config.yaml', 'r'), Loader=yaml.BaseLoader)
+def load_config(config_path):
+    cfg = yaml.load(open(config_path, 'r'), Loader=yaml.BaseLoader)
     return cfg
 
 def err(msg):

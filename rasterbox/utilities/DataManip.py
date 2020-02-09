@@ -1,7 +1,7 @@
 import copy
 import math
 import numpy as np
-from Utils.Misc import sys
+from rasterbox.utilities import Misc
 
 """
 ######    General use functions
@@ -27,9 +27,7 @@ def create_batch_generator(X, y, batch_size=128, shuffle=False):
 
 def rescale(arr, two_percent=True):
     arr_min = arr.min()
-    print(arr_min)
     arr_max = arr.max()
-    print(arr_max)
     scaled = (arr - arr_min) / (arr_max - arr_min)
 
     if two_percent:

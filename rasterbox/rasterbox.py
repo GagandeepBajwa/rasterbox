@@ -3,20 +3,21 @@ import math
 import yaml
 import struct
 import numpy as np
-from rasterbox import Misc
-from rasterbox import Label
-from rasterbox import Image
-
-cfg = Misc.load_config()
+from rasterbox.utilities import Misc
+from rasterbox.Image import Image
+from rasterbox.Target import Target
 
 class rasterbox(object):
-    def __init__(self, src, images_path, targets_path):
+    def __init__(self, src, images_path, targets_path, target_dict):
         self.src = src
+        self.targets = target_dict
         self.__build(images_path, targets_path)
 
     def __build(self, images_path, targets_path):
         images_path = os.path.join(self.src, '%s' % images_path)
         targets_path = os.path.join(self.src, '%s' % targets_path)
+        if images_path == None or targets_path == None:
+            raise FileNotFoundError("Couldn't locate images path or targets path")
         image_bins = self.__build_binaries(images_path)
         target_bins = self.__build_binaries(targets_path)
 
@@ -34,16 +35,13 @@ class rasterbox(object):
                 err("Do not recognize file ", bin)
 
 
-    def __build_labels(self, bins):
-        self.Label = dict()
-        classes = cfg['bcgw_labels']
+    def __build_targets(self, bins):
+        self.Target = dict()
 
         for _, bin in enumerate(bins):
-            # add a dict item to the Label dict --
-            # labelname : Label
             self.Target.update({
-                c:Target(c, bin, cfg)
-                for c in classes if c in bin.lower()
+                target:Target(target, bin, self.targets)
+                for target in self.targets if target in bin.lower()
             })
 
 
@@ -57,3 +55,5 @@ class rasterbox(object):
                 return bin_files
         except:
             err("Error building headers and binaries for %s" % path)
+    def combine_satellites(self):
+        return np.append(self.S2, self.L8, axis=1)

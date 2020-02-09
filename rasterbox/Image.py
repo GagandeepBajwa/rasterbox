@@ -1,24 +1,26 @@
 import numpy as np
 import  matplotlib.pyplot as plt
+from rasterbox.utilities import Misc
+from rasterbox.utilities import DataManip
+
 
 class Image(object):
     def __init__(self, bin):
-        samples, lines, bands, data = read_binary(bin)
+        samples, lines, bands, data = Misc.read_binary(bin)
         self.samples, self.lines, self.bands = \
             int(samples), int(lines), int(bands)
-        self.Data = data
+        self.Data = data.reshape(self.bands, self.lines * self.samples)
         self.__build_rgb()
 
 
     def __build_rgb(self):
         arr = np.zeros((self.lines, self.samples, 3))
-        print("rgb shape:", arr.shape)
 
         for i in range(0, 3):
             arr[:, :, i] = self.Data[3 - i, :].reshape((self.lines, self.samples))
 
         for i in range(0, 3):
-            arr[:, :, i] = rescale(arr[:, :, i])
+            arr[:, :, i] = DataManip.rescale(arr[:, :, i])
 
         self.rgb = arr
 
