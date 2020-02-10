@@ -11,7 +11,6 @@ class DataTest(object):
 
 
         with open(labels_path, 'rb') as lbpath:
-            print("Opened labels path")
             magic, n = struct.unpack('>II', lbpath.read(8))
             labels = np.fromfile(lbpath, dtype=np.uint8)
 
