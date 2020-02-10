@@ -1,7 +1,5 @@
 import os
 import math
-import yaml
-import struct
 import numpy as np
 from rasterbox.utilities import Misc
 from rasterbox.Image import Image
@@ -32,7 +30,7 @@ class rasterbox(object):
             elif 'L8' in bin:
                 self.L8 = Image(bins[idx])
             else:
-                err("Do not recognize file ", bin)
+                Misc.err("Do not recognize file ", bin)
 
 
     def __build_targets(self, bins):
@@ -54,6 +52,6 @@ class rasterbox(object):
                 ]
                 return bin_files
         except:
-            err("Error building headers and binaries for %s" % path)
+            Misc.err("Error building headers and binaries for %s" % path)
     def combine_satellites(self):
         return np.append(self.S2, self.L8, axis=1)

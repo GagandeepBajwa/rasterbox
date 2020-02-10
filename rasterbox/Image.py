@@ -24,13 +24,8 @@ class Image(object):
 
         self.rgb = arr
 
-
-    def ravel(self):
-        return ravel(self.lines, self.samples, self.bands, self.Data)
-
-
     def spatial(self):
-        return spatial(self.lines, self.samples, self.bands, self.Data)
+        return self.Data.reshape((self.samples,self.lines,self.bands))
 
 
     def showplot(self):
