@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rasterbox",
-    version="0.0.1",
+    version="0.0.2",
     author="Brad Crump",
     author_email="brad@breadcrumbbuilds.com",
     description="Semantic access of raster images and target labels associated with rasters",
